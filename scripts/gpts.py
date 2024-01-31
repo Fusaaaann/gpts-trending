@@ -35,11 +35,25 @@ def get_trending_data(url):
 
 raw_data = []
 
-content = "# Today's Trending\n\n"
 
 # generate folder :yyyy-mm-dd
-folder = time.strftime("%Y-%m-%d", time.localtime())
+today_date = time.strftime("%Y-%m-%d", time.localtime())
+folder = today_date
 os.mkdir(folder)
+
+content = f"# Today's Trending -- {today_date}\n\n"
+
+# Navigate to yesterday
+yesterday_folder = os.path.join("..", yesterday_date)
+yesterday_file_path = os.path.join(yesterday_folder, "README.md")
+content += "[yesterday](" + os.symlink(os.path.relpath(file_path, os.path.dirname(yesterday_file_path)), yesterday_file_path) + ")"
+content += "\n"
+
+# Navigate to tomorrow
+tomorrow_folder = os.path.join("..", tomorrow_date)
+tomorrow_file_path = os.path.join(tomorrow_folder, "README.md")
+content += "[tomorrow](" + os.symlink(os.path.relpath(file_path, os.path.dirname(tomorrow_file_path)), tomorrow_file_path) + ")"
+content += "\n\n"
 
 for target in targets:
     time.sleep(10)
